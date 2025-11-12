@@ -11,6 +11,7 @@ int shell_loop(char *argv0)
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
+	char *cmd; 
 
 	while (1)
 	{
@@ -29,7 +30,7 @@ int shell_loop(char *argv0)
 		if (nread > 0 && line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
-		char *cmd = get_command(line);
+		cmd = get_command(line);
 		if (!cmd)
 			continue;
 
@@ -37,3 +38,4 @@ int shell_loop(char *argv0)
 	}
 	return (0);
 }
+

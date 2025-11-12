@@ -9,9 +9,9 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-extern char **environ
+extern char **environ;
 
-int shell_loop(char *argv0)
+int shell_loop(char *argv0);
 char *get_command(char *line);
 int exec_command(char *cmd, char *argv0);
 
