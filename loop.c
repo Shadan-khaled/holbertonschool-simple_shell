@@ -1,4 +1,4 @@
-#include "stdio.h"
+#include "shell.h"
 
 /**
  * shell_loop - main shell loop, handles prompt, reading and executing
