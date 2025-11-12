@@ -1,0 +1,13 @@
+# Compiled files
+*.o
+hsh
+a.out
+
+# Editor files
+*~
+*.swp
+vi
+
+# Test files
+test_*
+checker
