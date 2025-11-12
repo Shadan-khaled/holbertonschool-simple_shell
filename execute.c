@@ -1,21 +1,25 @@
 #include "shell.h"
 
+/**
+ * exec_command - executes a command
+ * @args: command arguments
+ * @argv0: program name for error messages
+ *
+ * Return: exit status
+ */
 int exec_command(char **args, char *argv0)
 {
-	struct stat st;
 	pid_t pid;
 	int status;
-	char *cmd = args[0];
+	char *cmd_path;
 
-	if (strchr(cmd, '/') == NULL)
-	{
-		dprintf(STDERR_FILENO, "%s: 1: %s: not found\n", argv0, cmd);
-		return (127);
-	}
+	if (!args || !args[0])
+		return (1);
 
-	if (stat(cmd, &st) == -1 || access(cmd, X_OK) != 0)
+	cmd_path = find_in_path(args[0]);
+	if (!cmd_path)
 	{
-		dprintf(STDERR_FILENO, "%s: 1: %s: not found\n", argv0, cmd);
+		fprintf(stderr, "%s: 1: %s: not found\n", argv0, args[0]);
 		return (127);
 	}
 
@@ -23,17 +27,25 @@ int exec_command(char **args, char *argv0)
 	if (pid == -1)
 	{
 		perror("fork");
+		free(cmd_path);
 		return (1);
 	}
 
 	if (pid == 0)
 	{
-		execve(cmd, args, environ);
-		dprintf(STDERR_FILENO, "%s: 1: %s: %s\n", argv0, cmd, strerror(errno));
-		_exit(126);
+		if (execve(cmd_path, args, environ) == -1)
+		{
+			fprintf(stderr, "%s: 1: %s: %s\n", argv0, args[0], strerror(errno));
+			free(cmd_path);
+			_exit(126);
+		}
 	}
-	else
-		waitpid(pid, &status, 0);
 
-	return (WIFEXITED(status) ? WEXITSTATUS(status) : 1);
+	waitpid(pid, &status, 0);
+	free(cmd_path);
+
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+
+	return (1);
 }
