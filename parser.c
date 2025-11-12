@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/**
+ * get_command - trims whitespace from command line
+ * @line: input line to trim
+ *
+ * Return: pointer to trimmed string or NULL
+ */
 char *get_command(char *line)
 {
 	int start = 0, end;
@@ -21,21 +27,29 @@ char *get_command(char *line)
 	return (line + start);
 }
 
+/**
+ * split_line - splits command line into tokens
+ * @line: input line to split
+ *
+ * Return: array of tokens or NULL
+ */
 char **split_line(char *line)
 {
-	char **toks = NULL, *tok;
-	size_t size = 0;
+	char **tokens;
+	char *token;
+	int i = 0;
 
-	tok = strtok(line, " \t");
-	while (tok)
+	tokens = malloc(sizeof(char *) * MAX_TOKENS);
+	if (!tokens)
+		return (NULL);
+
+	token = strtok(line, " \t");
+	while (token && i < MAX_TOKENS - 1)
 	{
-		toks = realloc(toks, sizeof(char *) * (size + 2));
-		if (!toks)
-			return (NULL);
-		toks[size++] = tok;
-		tok = strtok(NULL, " \t");
+		tokens[i++] = token;
+		token = strtok(NULL, " \t");
 	}
-	if (toks)
-		toks[size] = NULL;
-	return (toks);
+	tokens[i] = NULL;
+
+	return (tokens);
 }
