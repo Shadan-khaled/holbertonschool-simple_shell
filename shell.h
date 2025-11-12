@@ -9,11 +9,28 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-extern char **environ;
+#define MAX_TOKENS 64
 
+extern char **environ;
+extern int last_status;
+
+/* Main shell loop */
 int shell_loop(char *argv0);
-char **split_line(char *line);
+
+/* Parser functions */
 char *get_command(char *line);
+char **split_line(char *line);
+
+/* Execution */
 int exec_command(char **args, char *argv0);
 
-#endif /* SHELL_H */
+/* Path utilities */
+char *find_in_path(char *cmd);
+char *get_env_var(char *name);
+
+/* Built-ins */
+int check_builtin(char **args);
+int builtin_exit(char **args);
+int builtin_env(void);
+
+#endif
