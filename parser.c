@@ -1,10 +1,26 @@
 #include "shell.h"
 
-/**
- * split_line - splits a line into tokens
- * @line: input line
- * Return: NULL-terminated array of strings
- */
+char *get_command(char *line)
+{
+	int start = 0, end;
+
+	if (!line)
+		return (NULL);
+
+	while (line[start] == ' ' || line[start] == '\t')
+		start++;
+
+	if (line[start] == '\0')
+		return (NULL);
+
+	end = strlen(line) - 1;
+	while (end > start && (line[end] == ' ' || line[end] == '\t'))
+		end--;
+
+	line[end + 1] = '\0';
+	return (line + start);
+}
+
 char **split_line(char *line)
 {
 	char **toks = NULL, *tok;

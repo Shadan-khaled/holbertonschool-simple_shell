@@ -1,11 +1,5 @@
 #include "shell.h"
 
-/**
- * exec_command - executes a command with arguments
- * @args: NULL-terminated array of args
- * @argv0: program name (for error formatting)
- * Return: exit status
- */
 int exec_command(char **args, char *argv0)
 {
 	struct stat st;

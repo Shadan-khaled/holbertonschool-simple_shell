@@ -17,4 +17,3 @@ char *get_command(char *line);
 int exec_command(char **args, char *argv0);
 
 #endif /* SHELL_H */
-
