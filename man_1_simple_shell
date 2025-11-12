@@ -1,22 +1,19 @@
 .TH SIMPLE_SHELL 1 "November 2025" "Holberton School" "User Commands"
 .SH NAME
-simple_shell \- a basic UNIX command interpreter
+simple_shell \- basic UNIX command interpreter
 .SH SYNOPSIS
 .B simple_shell
 .SH DESCRIPTION
 .B simple_shell
-is a simple UNIX command line interpreter that executes commands read from standard input.
-
-It implements basic shell functionality including command execution, built-in commands, and PATH resolution.
+is a simple UNIX command line interpreter that executes commands.
 
 .SH FEATURES
-The shell supports:
 .TP
 \fBInteractive mode\fR
-Displays a prompt and waits for user input
+Displays prompt and waits for input
 .TP
 \fBNon-interactive mode\fR
-Reads and executes commands from a pipe or file
+Reads commands from pipe or file
 .TP
 \fBBuilt-in commands\fR
 exit, env
@@ -24,32 +21,31 @@ exit, env
 .SH BUILT-IN COMMANDS
 .TP
 .B exit [status]
-Exit the shell with optional exit status
+Exit shell with optional status
 .TP
 .B env
-Print the current environment variables
+Print environment variables
 
 .SH EXAMPLES
-.TP
-Interactive mode:
+Interactive:
 .nf
 $ ./hsh
 ($) ls
-main.c shell.c README.md
+main.c shell.h
 ($) exit
 .fi
-.TP
-Non-interactive mode:
+
+Non-interactive:
 .nf
-$ echo "ls -l" | ./hsh
--rw-r--r-- 1 user user 200 Nov 12 main.c
+$ echo "ls" | ./hsh
+main.c shell.h
 .fi
 
 .SH RETURN VALUE
-Returns the exit status of the last command executed, or the status specified with exit.
+Exit status of last command
 
 .SH SEE ALSO
-sh(1), bash(1), execve(2), fork(2)
+sh(1), bash(1), execve(2)
 
 .SH AUTHORS
-Shaden Khaled, Own Algarni
+Shaden Khaled, Owen Algarni
