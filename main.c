@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * main - Entry point of the simple shell
+ * main - Entry point
  * @argc: argument count
  * @argv: argument vector
  * Return: 0 on success

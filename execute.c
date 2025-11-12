@@ -2,9 +2,8 @@
 
 /**
  * exec_command - executes a command (only full path in this task)
- * @cmd: command to execute (e.g. /bin/ls)
- * @argv0: program name (for error formatting)
- *
+ * @cmd: command to execute
+ * @argv0: program name (for error messages)
  * Return: exit status (0 on success, 127 if not found, 1 on error)
  */
 int exec_command(char *cmd, char *argv0)
@@ -44,9 +43,7 @@ int exec_command(char *cmd, char *argv0)
 		_exit(126);
 	}
 	else
-	{
 		waitpid(pid, &status, 0);
-	}
 
 	return (WIFEXITED(status) ? WEXITSTATUS(status) : 1);
 }

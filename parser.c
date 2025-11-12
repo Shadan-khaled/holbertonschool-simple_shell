@@ -1,24 +1,27 @@
 #include "shell.h"
 
 /**
- * get_command - returns the first non-space part of a line
+ * get_command - returns the command trimmed of spaces
  * @line: input line from user
- *
- * Return: pointer to command string or NULL if empty
+ * Return: pointer to trimmed command or NULL if empty
  */
 char *get_command(char *line)
 {
-	int i = 0;
+	int start = 0, end;
 
 	if (!line)
 		return (NULL);
 
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
+	while (line[start] == ' ' || line[start] == '\t')
+		start++;
 
-	if (line[i] == '\0')
+	if (line[start] == '\0')
 		return (NULL);
 
-	return (line + i);
-}
+	end = strlen(line) - 1;
+	while (end > start && (line[end] == ' ' || line[end] == '\t'))
+		end--;
 
+	line[end + 1] = '\0';
+	return (line + start);
+}
