@@ -1,27 +1,25 @@
 #include "shell.h"
 
 /**
- * get_command - returns the command trimmed of spaces
- * @line: input line from user
- * Return: pointer to trimmed command or NULL if empty
+ * split_line - splits a line into tokens
+ * @line: input line
+ * Return: NULL-terminated array of strings
  */
-char *get_command(char *line)
+char **split_line(char *line)
 {
-	int start = 0, end;
+	char **toks = NULL, *tok;
+	size_t size = 0;
 
-	if (!line)
-		return (NULL);
-
-	while (line[start] == ' ' || line[start] == '\t')
-		start++;
-
-	if (line[start] == '\0')
-		return (NULL);
-
-	end = strlen(line) - 1;
-	while (end > start && (line[end] == ' ' || line[end] == '\t'))
-		end--;
-
-	line[end + 1] = '\0';
-	return (line + start);
+	tok = strtok(line, " \t");
+	while (tok)
+	{
+		toks = realloc(toks, sizeof(char *) * (size + 2));
+		if (!toks)
+			return (NULL);
+		toks[size++] = tok;
+		tok = strtok(NULL, " \t");
+	}
+	if (toks)
+		toks[size] = NULL;
+	return (toks);
 }

@@ -1,16 +1,17 @@
 #include "shell.h"
 
 /**
- * exec_command - executes a command (only full path in this task)
- * @cmd: command to execute
- * @argv0: program name (for error messages)
- * Return: exit status (0 on success, 127 if not found, 1 on error)
+ * exec_command - executes a command with arguments
+ * @args: NULL-terminated array of args
+ * @argv0: program name (for error formatting)
+ * Return: exit status
  */
-int exec_command(char *cmd, char *argv0)
+int exec_command(char **args, char *argv0)
 {
 	struct stat st;
 	pid_t pid;
 	int status;
+	char *cmd = args[0];
 
 	if (strchr(cmd, '/') == NULL)
 	{
@@ -33,12 +34,7 @@ int exec_command(char *cmd, char *argv0)
 
 	if (pid == 0)
 	{
-		char *argv_exec[2];
-
-		argv_exec[0] = cmd;
-		argv_exec[1] = NULL;
-
-		execve(cmd, argv_exec, environ);
+		execve(cmd, args, environ);
 		dprintf(STDERR_FILENO, "%s: 1: %s: %s\n", argv0, cmd, strerror(errno));
 		_exit(126);
 	}

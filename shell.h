@@ -12,7 +12,9 @@
 extern char **environ;
 
 int shell_loop(char *argv0);
+char **split_line(char *line);
 char *get_command(char *line);
-int exec_command(char *cmd, char *argv0);
+int exec_command(char **args, char *argv0);
 
 #endif /* SHELL_H */
+

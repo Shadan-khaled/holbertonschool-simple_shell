@@ -1,16 +1,11 @@
 #include "shell.h"
 
-/**
- * shell_loop - main loop for the simple shell
- * @argv0: program name (for error messages)
- * Return: 0 on success
- */
 int shell_loop(char *argv0)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
-	char *cmd;
+	char **args;
 
 	while (1)
 	{
@@ -29,11 +24,15 @@ int shell_loop(char *argv0)
 		if (nread > 0 && line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
-		cmd = get_command(line);
-		if (!cmd || cmd[0] == '\0')
+		args = split_line(line);
+		if (!args || !args[0])
+		{
+			free(args);
 			continue;
+		}
 
-		exec_command(cmd, argv0);
+		exec_command(args, argv0);
+		free(args);
 	}
 	return (0);
 }
