@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/**
+ * shell_loop - main shell loop
+ * @argv0: program name for error messages
+ *
+ * Return: 0 on success
+ */
 int shell_loop(char *argv0)
 {
 	char *line = NULL;
@@ -7,11 +13,12 @@ int shell_loop(char *argv0)
 	ssize_t nread;
 	char **args;
 	char *trimmed;
+	int builtin_result;
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "$ ", 2);
+			write(STDOUT_FILENO, "($) ", 4);
 
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
@@ -19,7 +26,7 @@ int shell_loop(char *argv0)
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
 			free(line);
-			return (0);
+			return (last_status);
 		}
 
 		if (nread > 0 && line[nread - 1] == '\n')
@@ -36,7 +43,18 @@ int shell_loop(char *argv0)
 			continue;
 		}
 
-		exec_command(args, argv0);
+		builtin_result = check_builtin(args);
+		if (builtin_result == -1)
+		{
+			free(args);
+			free(line);
+			return (last_status);
+		}
+		else if (builtin_result == 0)
+		{
+			last_status = exec_command(args, argv0);
+		}
+
 		free(args);
 	}
 	return (0);
