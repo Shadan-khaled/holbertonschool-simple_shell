@@ -1,75 +1,93 @@
 /**
- * file: shell_loop.c
- * Auth:  Owen Mousa Algarni Shadan AlKharji 
- * Date: 13 Nov 2025
- * Desc: main shell loop; reads lines, parses, and executes commands.
+ * File: loop.c
+ * Description: Implements the main shell loop for reading and executing commands.
+ * Authors: Owen Mousa Algarni, Shadan Khaled Alkharji
+ * Date: Nov 2025
  */
 
 #include "shell.h"
 
 /**
+ * read_command - reads a line from standard input
+ *
+ * Return: pointer to the line, or NULL on EOF/error
+ */
+char *read_command(void)
+{
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t nread;
+
+	nread = getline(&line, &len, stdin);
+	if (nread == -1)
+	{
+		free(line);
+		return (NULL);
+	}
+
+	if (nread > 0 && line[nread - 1] == '\n')
+		line[nread - 1] = '\0';
+
+	return (line);
+}
+
+/**
  * shell_loop - main shell loop
  * @argv0: program name for error messages
  *
- * Description: reads commands from stdin, parses arguments,
- * checks for builtins, and executes commands in a loop.
- * Handles interactive and non-interactive modes.
- *
- * Return: 0 on success or last_status on exit
+ * Return: 0 on success, last command exit status on exit
  */
 int shell_loop(char *argv0)
 {
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t nread;
-    char **args;
-    char *trimmed;
-    int builtin_result;
+	char *line;
+	char **args;
+	char *trimmed;
+	int builtin_result;
 
-    while (1)
-    {
-        if (isatty(STDIN_FILENO))
-        {
-            write(STDOUT_FILENO, "($) ", 4);
-        }
+	while (1)
+	{
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "($) ", 4);
 
-        nread = getline(&line, &len, stdin);
-        if (nread == -1)
-        {
-            if (isatty(STDIN_FILENO))
-                write(STDOUT_FILENO, "\n", 1);
-            free(line);
-            return (last_status);
-        }
+		line = read_command();
+		if (!line)
+		{
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			return (last_status);
+		}
 
-        if (nread > 0 && line[nread - 1] == '\n')
-            line[nread - 1] = '\0';
+		trimmed = get_command(line);
+		if (!trimmed || trimmed[0] == '\0')
+		{
+			free(line);
+			continue;
+		}
 
-        trimmed = get_command(line);
-        if (!trimmed || trimmed[0] == '\0')
-            continue;
+		args = split_line(trimmed);
+		if (!args || !args[0])
+		{
+			free(args);
+			free(line);
+			continue;
+		}
 
-        args = split_line(trimmed);
-        if (!args || !args[0])
-        {
-            free(args);
-            continue;
-        }
+		builtin_result = check_builtin(args);
+		if (builtin_result == -1)
+		{
+			free(args);
+			free(line);
+			return (last_status);
+		}
+		else if (builtin_result == 0)
+		{
+			last_status = exec_command(args, argv0);
+		}
 
-        builtin_result = check_builtin(args);
-        if (builtin_result == -1)
-        {
-            free(args);
-            free(line);
-            return (last_status);
-        }
-        else if (builtin_result == 0)
-        {
-            last_status = exec_command(args, argv0);
-        }
+		free(args);
+		free(line);
+	}
 
-        free(args);
-    }
-
-    return (0);
+	return (0);
 }
+
