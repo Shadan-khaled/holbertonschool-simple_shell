@@ -1,6 +1,6 @@
 /**
  * file: builtin.c
- * Auth: Shadan Khurji <your-email@example.com>
+ * Auth: Owen Mousa Algarni Shadan AlKharji 
  * Date: 13 Nov 2025
  * Desc: built-in shell commands: exit, env, and builtin checker.
  */
