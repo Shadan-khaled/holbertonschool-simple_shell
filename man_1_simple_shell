@@ -48,4 +48,4 @@ Exit status of last command
 sh(1), bash(1), execve(2)
 
 .SH AUTHORS
-Shaden Khaled, Owen Algarni
+Shaden Alkharji, Owen Algarni
