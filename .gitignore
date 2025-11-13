@@ -2,12 +2,21 @@
 *.o
 hsh
 a.out
+core
+core.*
 
 # Editor files
 *~
 *.swp
-vi
+*.swo
+.vscode/
+.idea/
 
-# Test files
+# Test and temporary files
 test_*
 checker
+
+# Logs or debug output
+*.log
+
+# Ensure newline at end of file
