@@ -1,7 +1,7 @@
 /**
  * file: get_command.c
- * Auth: Shadan Khurji <your-email@example.com>
- * Date: 13 Nov 2025
+ * Auth:  Owen Mousa Algarni,Shadan AlKharji 
+ * Date:  Nov 2025
  * Desc: trims whitespace from input and splits command line into tokens.
  */
 
