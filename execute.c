@@ -1,6 +1,6 @@
 /**
  * file: exec_command.c
- * Auth: Shadan Khurji <your-email@example.com>
+ * Auth:  Owen Mousa Algarni Shadan AlKharji 
  * Date: 13 Nov 2025
  * Desc: executes a command using fork and execve in a shell.
  */
