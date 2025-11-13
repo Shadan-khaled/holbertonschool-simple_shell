@@ -1,3 +1,11 @@
+/**
+ * file: shell.h
+ * Auth: Owen Mousa Algarni , Shadan khaled Alkharji
+ * Date:  Nov 2025
+ * Desc: header file for simple_shell project, contains function
+ *      prototypes, constants, and global variables.
+ */
+
 #ifndef SHELL_H
 #define SHELL_H
 
@@ -11,8 +19,9 @@
 
 #define MAX_TOKENS 64
 
-extern char **environ;
-extern int last_status;
+/* Global variables */
+extern char **environ;   /* environment variables */
+extern int last_status;  /* last command exit status */
 
 /* Main shell loop */
 int shell_loop(char *argv0);
@@ -33,4 +42,4 @@ int check_builtin(char **args);
 int builtin_exit(char **args);
 int builtin_env(void);
 
-#endif
+#endif /* SHELL_H */
